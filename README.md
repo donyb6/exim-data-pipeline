@@ -17,18 +17,21 @@ The pipeline processes EXIM's authorised transaction records (FY2007 to FY2025 Q
 - pandas, SQLAlchemy, requests, python-dotenv
 
 ## Project structure
+
+```
 exim_pipeline/
 ├── config/
-│ └── columns.yaml # source URL and file paths
+│   └── columns.yaml       # source URL and file paths
 ├── src/
-│ ├── extract.py # downloads the raw CSV from EXIM
-│ ├── load_raw.py # loads raw CSV into MySQL (bronze)
-│ ├── silver_clean.sql # cleans bronze into silver
-│ └── gold_schema.sql # builds the star schema (gold)
+│   ├── extract.py         # downloads the raw CSV from EXIM
+│   ├── load_raw.py        # loads raw CSV into MySQL (bronze)
+│   ├── silver_clean.sql   # cleans bronze into silver
+│   └── gold_schema.sql    # builds the star schema (gold)
 ├── data/
-│ └── raw/ # downloaded CSV (not tracked in Git)
+│   └── raw/                # downloaded CSV (not tracked in Git)
 ├── requirements.txt
-└── .env # MySQL credentials (not tracked in Git)
+└── .env                    # MySQL credentials (not tracked in Git)
+```
 
 ## Setup
 
