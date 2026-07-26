@@ -1,0 +1,7 @@
+requests
+pandas
+pyyaml
+pytest
+python-dotenv
+mysql-connector-python
+sqlalchemy
