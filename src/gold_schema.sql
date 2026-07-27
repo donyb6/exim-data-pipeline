@@ -1,3 +1,14 @@
+SET FOREIGN_KEY_CHECKS = 0;
+
+DROP TABLE IF EXISTS fact_deals;
+DROP TABLE IF EXISTS dim_country;
+DROP TABLE IF EXISTS dim_exporter;
+DROP TABLE IF EXISTS dim_lender;
+DROP TABLE IF EXISTS dim_program;
+
+SET FOREIGN_KEY_CHECKS = 1;
+
+
 CREATE TABLE dim_country (
     country_id INT AUTO_INCREMENT PRIMARY KEY,
     country_name VARCHAR(100) UNIQUE

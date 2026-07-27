@@ -1,0 +1,39 @@
+2026-07-27 22:48:41,956 [INFO] Orchestrator test run
+2026-07-27 22:52:28,535 [INFO] Orchestrator test run
+2026-07-27 22:52:29,337 [INFO] Running SQL file: src/silver_clean.sql
+2026-07-27 22:52:51,706 [INFO] Finished running: src/silver_clean.sql (18 statements)
+2026-07-27 22:55:21,386 [INFO] Orchestrator test run
+2026-07-27 22:55:25,168 [INFO] Starting extract stage
+2026-07-27 22:55:35,855 [INFO] Extract complete: 19,062,847 bytes saved to data\raw\exim_fy25q4.csv
+2026-07-27 22:55:35,859 [INFO] Starting bronze load stage
+2026-07-27 22:55:45,774 [INFO] Bronze load complete: 52,122 rows
+2026-07-27 22:55:45,787 [INFO] Running SQL file: src/silver_clean.sql
+2026-07-27 22:56:06,622 [INFO] Finished running: src/silver_clean.sql (18 statements)
+2026-07-27 22:56:06,623 [INFO] Running SQL file: src/gold_schema.sql
+2026-07-27 22:56:06,640 [ERROR] Pipeline failed: (mysql.connector.errors.ProgrammingError) 1050 (42S01): Table 'dim_country' already exists
+[SQL: CREATE TABLE dim_country (
+    country_id INT AUTO_INCREMENT PRIMARY KEY,
+    country_name VARCHAR(100) UNIQUE
+)]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-07-27 22:59:09,927 [INFO] Orchestrator test run
+2026-07-27 22:59:11,840 [INFO] Starting extract stage
+2026-07-27 22:59:24,051 [INFO] Extract complete: 19,062,847 bytes saved to data\raw\exim_fy25q4.csv
+2026-07-27 22:59:24,055 [INFO] Starting bronze load stage
+2026-07-27 22:59:34,288 [INFO] Bronze load complete: 52,122 rows
+2026-07-27 22:59:34,302 [INFO] Running SQL file: src/silver_clean.sql
+2026-07-27 22:59:54,647 [INFO] Finished running: src/silver_clean.sql (18 statements)
+2026-07-27 22:59:54,647 [INFO] Running SQL file: src/gold_schema.sql
+2026-07-27 22:59:54,650 [ERROR] Pipeline failed: (mysql.connector.errors.DatabaseError) 3730 (HY000): Cannot drop table 'dim_country' referenced by a foreign key constraint 'fact_deals_ibfk_1' on table 'fact_deals'.
+[SQL: DROP TABLE IF EXISTS dim_country]
+(Background on this error at: https://sqlalche.me/e/20/4xp6)
+2026-07-27 23:02:56,357 [INFO] Orchestrator test run
+2026-07-27 23:02:58,338 [INFO] Starting extract stage
+2026-07-27 23:03:10,541 [INFO] Extract complete: 19,062,847 bytes saved to data\raw\exim_fy25q4.csv
+2026-07-27 23:03:10,546 [INFO] Starting bronze load stage
+2026-07-27 23:03:20,476 [INFO] Bronze load complete: 52,122 rows
+2026-07-27 23:03:20,488 [INFO] Running SQL file: src/silver_clean.sql
+2026-07-27 23:03:43,585 [INFO] Finished running: src/silver_clean.sql (18 statements)
+2026-07-27 23:03:43,585 [INFO] Running SQL file: src/gold_schema.sql
+2026-07-27 23:03:49,142 [INFO] Finished running: src/gold_schema.sql (22 statements)
+2026-07-27 23:03:49,142 [INFO] Pipeline completed successfully
