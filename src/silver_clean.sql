@@ -142,7 +142,8 @@ RENAME COLUMN Small_Business_Authorized_Amount TO small_business_amount,
 RENAME COLUMN Woman_Owned_Authorized_Amount TO woman_owned_amount,
 RENAME COLUMN Minority_Owned_Authorized_Amount TO minority_owned_amount,
 RENAME COLUMN Loan_Interest_Rate TO loan_interest_rate,
-RENAME COLUMN Multiyear_Working_Capital_Extension TO multiyear_working_capital_extension;
+RENAME COLUMN Multiyear_Working_Capital_Extension TO multiyear_working_capital_extension,
+RENAME COLUMN Working_Capital_Delegated_Authority TO working_capital_delegated_authority;
 
 ALTER TABLE silver_exim_deals
     MODIFY COLUMN approved_declined_amount DECIMAL(18,2),
