@@ -37,3 +37,8 @@
 2026-07-27 23:03:43,585 [INFO] Running SQL file: src/gold_schema.sql
 2026-07-27 23:03:49,142 [INFO] Finished running: src/gold_schema.sql (22 statements)
 2026-07-27 23:03:49,142 [INFO] Pipeline completed successfully
+2026-07-27 23:14:06,429 [INFO] Running SQL file: src/silver_clean.sql
+2026-07-27 23:14:29,118 [INFO] Finished running: src/silver_clean.sql (18 statements)
+2026-07-27 23:14:29,118 [INFO] Running SQL file: src/gold_schema.sql
+2026-07-27 23:14:34,286 [INFO] Finished running: src/gold_schema.sql (22 statements)
+2026-07-27 23:14:34,286 [INFO] Pipeline completed successfully
