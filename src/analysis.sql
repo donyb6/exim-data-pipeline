@@ -64,4 +64,5 @@ LEFT JOIN fact_deals AS f
 GROUP BY l.lender_name
 ORDER BY total_approved DESC
 LIMIT 10;
+-- from this query, there are duplicated lender names. they have to be merged into a single generalised name. this correction will be made in the gold_schema
 
