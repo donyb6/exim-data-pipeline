@@ -3,4 +3,4 @@ venv/
 __pycache__/
 data/raw/
 logs/
-src/exports/
+data/exports/

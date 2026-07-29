@@ -1,0 +1,10 @@
+[33mcommit c63620c24ef27d0f1971e04fbb3b6ab25e795bbe[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: Nana Boako <obengdboako@gmail.com>
+Date:   Wed Jul 29 22:50:14 2026 +0000
+
+    Add script to export full deal view to CSV
+
+ .gitignore                       |     3 [32m+[m[31m-[m
+ data/exports/exim_full_deals.csv | 52123 [32m+++++++++++++++++++++++++++++++++++++[m
+ src/export_full_table.py         |    58 [32m+[m
+ 3 files changed, 52183 insertions(+), 1 deletion(-)
