@@ -27,14 +27,33 @@ SELECT DISTINCT primary_exporter
 FROM silver_exim_deals
 WHERE primary_exporter IS NOT NULL;
 
-CREATE TABLE dim_lender(
+CREATE TABLE dim_lender (
     lender_id INT AUTO_INCREMENT PRIMARY KEY,
-    lender_name VARCHAR(255) UNIQUE
+    lender_name VARCHAR(255),
+    normalised_name VARCHAR(255) UNIQUE
 );
-INSERT INTO dim_lender (lender_name)
-SELECT DISTINCT primary_lender
-FROM silver_exim_deals
-WHERE primary_lender IS NOT NULL;
+
+INSERT INTO dim_lender (lender_name, normalised_name)
+SELECT 
+    MIN(display_name) AS lender_name,
+    REGEXP_REPLACE(
+        REGEXP_REPLACE(
+            REGEXP_REPLACE(match_key, ' NA$', ' N.A.'),
+            ' INC$', ' INC.'
+        ),
+        ' LLC$', ' LLC.'
+    ) AS normalised_name
+FROM (
+    SELECT 
+        primary_lender AS display_name,
+        REGEXP_REPLACE(
+            UPPER(TRIM(REPLACE(REPLACE(REPLACE(primary_lender, '.', ''), ',', ''), '  ', ' '))),
+            ' NATIONAL ASSOCIATION$', ' NA'
+        ) AS match_key
+    FROM silver_exim_deals
+    WHERE primary_lender IS NOT NULL
+) t
+GROUP BY match_key;
 
 CREATE TABLE dim_program (
     program_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -114,7 +133,19 @@ LEFT JOIN dim_country AS c
 LEFT JOIN dim_exporter AS e 
     ON s.primary_exporter = e.exporter_name
 LEFT JOIN dim_lender AS l 
-    ON s.primary_lender = l.lender_name
+    ON REGEXP_REPLACE(
+        REGEXP_REPLACE(
+            REGEXP_REPLACE(
+                REGEXP_REPLACE(
+                    UPPER(TRIM(REPLACE(REPLACE(REPLACE(s.primary_lender, '.', ''), ',', ''), '  ', ' '))),
+                    ' NATIONAL ASSOCIATION$', ' NA'
+                ),
+                ' NA$', ' N.A.'
+            ),
+            ' INC$', ' INC.'
+        ),
+        ' LLC$', ' LLC.'
+    ) = l.normalised_name
 LEFT JOIN dim_program AS p 
     ON s.program = p.program_name AND s.policy_type <=> p.policy_type;
 
