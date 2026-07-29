@@ -66,3 +66,17 @@ ORDER BY total_approved DESC
 LIMIT 10;
 -- from this query, there are duplicated lender names. they have to be merged into a single generalised name. this correction will be made in the gold_schema
 
+-- average deal size and cancellation rate
+SELECT 
+    p.program_name,
+    COUNT(*) AS deal_count,
+    AVG(f.approved_declined_amount) AS avg_deal_size,
+    SUM(f.is_cancelled) / COUNT(*) * 100 AS cancellation_rate_pct
+FROM fact_deals f
+LEFT JOIN dim_program p 
+    ON f.program_id = p.program_id
+WHERE p.program_name IS NOT NULL
+GROUP BY p.program_name
+ORDER BY avg_deal_size DESC;
+
+-- approved amount by fiscal year
