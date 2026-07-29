@@ -129,3 +129,18 @@ LEFT JOIN dim_country c ON f.country_id = c.country_id
 GROUP BY c.country_name
 ORDER BY total_outstanding_exposure DESC
 LIMIT 10;
+
+-- small business / woman-owned / minority-owned share over time
+SELECT 
+    fiscal_year,
+    SUM(small_business_amount) AS total_small_business,
+    SUM(woman_owned_amount) AS total_woman_owned,           
+    SUM(minority_owned_amount) AS total_minority_owned,
+    SUM(approved_declined_amount) AS total_approved,
+    ROUND(SUM(small_business_amount) / SUM(approved_declined_amount) * 100, 1) AS small_business_share_pct,
+    ROUND(SUM(woman_owned_amount) / SUM
+(approved_declined_amount) * 100, 1) AS woman_owned_share_pct,
+    ROUND(SUM(minority_owned_amount) / SUM(approved_declined_amount) * 100, 1) AS minority_owned_share_pct
+FROM fact_deals
+GROUP BY fiscal_year
+ORDER BY fiscal_year;
