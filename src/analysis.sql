@@ -72,11 +72,60 @@ SELECT
     COUNT(*) AS deal_count,
     AVG(f.approved_declined_amount) AS avg_deal_size,
     SUM(f.is_cancelled) / COUNT(*) * 100 AS cancellation_rate_pct
-FROM fact_deals f
-LEFT JOIN dim_program p 
+FROM fact_deals AS f
+LEFT JOIN dim_program AS p 
     ON f.program_id = p.program_id
 WHERE p.program_name IS NOT NULL
 GROUP BY p.program_name
 ORDER BY avg_deal_size DESC;
 
 -- approved amount by fiscal year
+SELECT 
+    fiscal_year,
+    COUNT(*) AS deal_count,
+    SUM(approved_declined_amount) AS total_approved
+FROM fact_deals
+GROUP BY fiscal_year
+ORDER BY fiscal_year;
+
+-- average deal size by fiscal year
+SELECT 
+    fiscal_year,
+    COUNT(*) AS deal_count,
+    AVG(approved_declined_amount) AS avg_deal_size
+FROM fact_deals
+GROUP BY fiscal_year
+ORDER BY fiscal_year;
+
+-- average comparision between brokered and non-brokered deals
+SELECT 
+    is_brokered,
+    COUNT(*) AS deal_count,
+    AVG(approved_declined_amount) AS avg_deal_size
+FROM fact_deals
+GROUP BY is_brokered;
+
+-- year over year growth
+SELECT 
+    fiscal_year,
+    SUM(approved_declined_amount) AS total_approved,
+    LAG(SUM(approved_declined_amount)) OVER (ORDER BY fiscal_year) AS prev_year_total,
+    ROUND(
+        (SUM(approved_declined_amount) - LAG(SUM(approved_declined_amount)) OVER (ORDER BY fiscal_year)) 
+        / LAG(SUM(approved_declined_amount)) OVER (ORDER BY fiscal_year) * 100, 
+        1
+    ) AS yoy_growth_pct
+FROM fact_deals
+GROUP BY fiscal_year
+ORDER BY fiscal_year;
+
+-- outstanding exposure concentration by country
+SELECT 
+    c.country_name,
+    SUM(f.outstanding_exposure) AS total_outstanding_exposure,
+    COUNT(*) AS deal_count
+FROM fact_deals AS f
+LEFT JOIN dim_country c ON f.country_id = c.country_id
+GROUP BY c.country_name
+ORDER BY total_outstanding_exposure DESC
+LIMIT 10;

@@ -84,6 +84,9 @@ CREATE TABLE fact_deals (
     approved_declined_amount DECIMAL(18,2),
     disbursed_shipped_amount DECIMAL(18,2),
     outstanding_exposure DECIMAL(18,2),
+    small_business_amount DECIMAL(18,2),
+    woman_owned_amount DECIMAL(18,2),
+    minority_owned_amount DECIMAL(18,2),
     FOREIGN KEY (country_id) REFERENCES dim_country(country_id),
     FOREIGN KEY (exporter_id) REFERENCES dim_exporter(exporter_id),
     FOREIGN KEY (lender_id) REFERENCES dim_lender(lender_id),
@@ -122,12 +125,14 @@ INSERT INTO fact_deals
     (unique_id, fiscal_year, country_id, exporter_id, lender_id, program_id,
      decision_date, effective_date, expiration_date,
      is_brokered, is_cancelled,
-     approved_declined_amount, disbursed_shipped_amount, outstanding_exposure)
+     approved_declined_amount, disbursed_shipped_amount, outstanding_exposure,
+     small_business_amount, woman_owned_amount, minority_owned_amount)
 SELECT
     s.unique_id, s.fiscal_year, c.country_id, e.exporter_id, l.lender_id, p.program_id,
     s.decision_date, s.effective_date, s.expiration_date,
     s.is_brokered, s.is_cancelled,
-    s.approved_declined_amount, s.disbursed_shipped_amount, s.outstanding_exposure
+    s.approved_declined_amount, s.disbursed_shipped_amount, s.outstanding_exposure,
+    s.small_business_amount, s.woman_owned_amount, s.minority_owned_amount
 FROM silver_exim_deals AS s
 LEFT JOIN dim_country AS c ON s.country = c.country_name
 LEFT JOIN dim_exporter AS e ON s.primary_exporter = e.exporter_name
@@ -146,6 +151,4 @@ LEFT JOIN dim_lender l
         ' LLC$', ' LLC.'
     ) = l.normalised_name
 LEFT JOIN dim_program AS p ON s.program = p.program_name AND s.policy_type <=> p.policy_type;
-
 SELECT * FROM fact_deals LIMIT 10;
-
