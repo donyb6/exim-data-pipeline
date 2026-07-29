@@ -23,22 +23,25 @@ The entire pipeline runs end to end with a single command via `orchestrate.py`, 
 ```
 exim_pipeline/
 ├── config/
-│   └── columns.yaml       # source URL and file paths
+│   └── columns.yaml            # source URL and file paths
 ├── src/
-│   ├── extract.py          # downloads the raw CSV from EXIM (standalone-runnable, also imported by orchestrate.py)
-│   ├── load_raw.py         # loads raw CSV into MySQL (bronze) (standalone-runnable, also imported by orchestrate.py)
-│   ├── silver_clean.sql    # cleans bronze into silver
-│   ├── gold_schema.sql     # builds the star schema (gold)
-│   ├── orchestrate.py      # runs the whole pipeline end to end with logging
-│   └── analysis.sql        # analysis queries
+│   ├── extract.py               # downloads the raw CSV from EXIM (standalone-runnable, also imported by orchestrate.py)
+│   ├── load_raw.py              # loads raw CSV into MySQL (bronze) (standalone-runnable, also imported by orchestrate.py)
+│   ├── silver_clean.sql         # cleans bronze into silver
+│   ├── gold_schema.sql          # builds the star schema (gold)
+│   ├── orchestrate.py           # runs the whole pipeline end to end with logging
+│   ├── analysis.sql             # analysis queries against the gold layer
+│   └── export_full_table.py     # exports the full deal view (fact_deals + all dimensions) to CSV
 ├── tests/
-│   └── test_data_quality.py  # pytest checks: no negative amounts, sane dates, no orphaned foreign keys, row count consistency
+│   └── test_data_quality.py     # pytest checks: no negative amounts, sane dates, no orphaned foreign keys, row count consistency
 ├── data/
-│   └── raw/                 # downloaded CSV (not tracked in Git)
+│   ├── raw/                     # downloaded CSV (not tracked in Git)
+│   └── exports/
+│       └── exim_full_deals.csv  # exported full deal view, tracked in Git for shared visualization use
 ├── logs/
-│   └── pipeline.log         # orchestrator run history (not tracked in Git)
+│   └── pipeline.log             # orchestrator run history (not tracked in Git)
 ├── requirements.txt
-└── .env                      # MySQL credentials (not tracked in Git)
+└── .env                          # MySQL credentials (not tracked in Git)
 ```
 
 ## Setup
