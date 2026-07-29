@@ -118,6 +118,7 @@ pytest
 - **Full refresh, not incremental.** Every pipeline run drops and rebuilds all tables from the latest source file, rather than only loading new or changed records. This is a deliberate choice given the dataset's size (~50k rows, loads in under a minute) and the fact that EXIM republishes the full historical file each quarter rather than an appendable delta.
 - **Exporter and country names are not deduplicated.** Unlike lenders, `dim_exporter` and `dim_country` use exact text matching with no normaliz=sation, so minor spelling variants of the same exporter (if any exist) would appear as separate entities.
 
+
 ## Data source
 
 [EXIM Bank public dataset](https://img.exim.gov/s3fs-public/dataset/vbhv-d8am/Data.Gov+-+FY25+Q4.csv), covering authorised export financing transactions.
