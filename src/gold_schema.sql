@@ -71,6 +71,7 @@ SELECT * FROM dim_program;
 CREATE TABLE fact_deals (
     deal_id INT AUTO_INCREMENT PRIMARY KEY,
     unique_id VARCHAR(50),
+    fiscal_year INT,
     country_id INT,
     exporter_id INT,
     lender_id INT,
@@ -118,21 +119,19 @@ LEFT JOIN dim_program AS p
 LIMIT 10;
 
 INSERT INTO fact_deals
-    (unique_id, country_id, exporter_id, lender_id, program_id,
+    (unique_id, fiscal_year, country_id, exporter_id, lender_id, program_id,
      decision_date, effective_date, expiration_date,
      is_brokered, is_cancelled,
      approved_declined_amount, disbursed_shipped_amount, outstanding_exposure)
 SELECT
-    s.unique_id, c.country_id, e.exporter_id, l.lender_id, p.program_id,
+    s.unique_id, s.fiscal_year, c.country_id, e.exporter_id, l.lender_id, p.program_id,
     s.decision_date, s.effective_date, s.expiration_date,
     s.is_brokered, s.is_cancelled,
     s.approved_declined_amount, s.disbursed_shipped_amount, s.outstanding_exposure
 FROM silver_exim_deals AS s
-LEFT JOIN dim_country AS c 
-    ON s.country = c.country_name
-LEFT JOIN dim_exporter AS e 
-    ON s.primary_exporter = e.exporter_name
-LEFT JOIN dim_lender AS l 
+LEFT JOIN dim_country AS c ON s.country = c.country_name
+LEFT JOIN dim_exporter AS e ON s.primary_exporter = e.exporter_name
+LEFT JOIN dim_lender l 
     ON REGEXP_REPLACE(
         REGEXP_REPLACE(
             REGEXP_REPLACE(
@@ -146,8 +145,7 @@ LEFT JOIN dim_lender AS l
         ),
         ' LLC$', ' LLC.'
     ) = l.normalised_name
-LEFT JOIN dim_program AS p 
-    ON s.program = p.program_name AND s.policy_type <=> p.policy_type;
+LEFT JOIN dim_program AS p ON s.program = p.program_name AND s.policy_type <=> p.policy_type;
 
 SELECT * FROM fact_deals LIMIT 10;
 
