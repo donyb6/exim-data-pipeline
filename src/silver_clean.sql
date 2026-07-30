@@ -153,3 +153,17 @@ ALTER TABLE silver_exim_deals
     MODIFY COLUMN small_business_amount DECIMAL(18,2),
     MODIFY COLUMN woman_owned_amount DECIMAL(18,2),
     MODIFY COLUMN minority_owned_amount DECIMAL(18,2);
+
+-- check for duplicates based on all columns
+WITH duplicate_cte AS (
+    SELECT *,
+        ROW_NUMBER() OVER (PARTITION BY working_capital_delegated_authority, woman_owned_amount, unique_id, undisbursed_exposure, term, small_business_amount, program, 
+        product_description, primary_source_repayment, primary_lender, primary_exporter, primary_borrower, primary_applicant, policy_type, outstanding_exposure, naics_sic_code, 
+        multiyear_working_capital_extension, minority_owned_amount, loan_interest_rate, is_cancelled, is_brokered, fiscal_year, exporter_state_name, exporter_state_code, exporter_city, 
+        expiration_date, effective_date, disbursed_shipped_amount, decision_date, decision_authority, decision, deal_number, country, approved_declined_amount
+        ORDER BY fiscal_year) AS row_num
+    FROM silver_exim_deals
+)
+SELECT *
+FROM duplicate_cte
+WHERE row_num > 1;
